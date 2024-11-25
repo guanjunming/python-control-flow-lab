@@ -46,14 +46,16 @@ check_letter()
 
 def check_voting_eligibility():
     voting_age = 21
-
-    age = input('Please enter your age: ')
-    if age.isnumeric() and int(age) > 0:
-        if int(age) >= voting_age:
-            print('You are eligible to vote.')
+    try:
+        age = int(input('Please enter your age: '))
+        if age > 0:
+            if age >= voting_age:
+                print('You are eligible to vote.')
+            else:
+                print('You are not eligible to vote.')
         else:
-            print('You are not eligible to vote.')
-    else:
+            print('Invalid input.')
+    except ValueError:
         print('Invalid input.')
         
 
@@ -79,16 +81,18 @@ check_voting_eligibility()
 # - Apply conditional logic to perform the correct age calculation based on the dog's age.
 
 def calculate_dog_years():
-    age = input("Input a dog's age: ")
-    if age.isnumeric() and int(age) > 0:
-        age = int(age)
-        if age <= 2:
-            dog_years = age * 10
+    try:
+        age = int(input("Input a dog's age: "))
+        if age > 0:
+            if age <= 2:
+                dog_years = age * 10
+            else:
+                dog_years = 20 + (age - 2) * 7
+            
+            print(f"The dog's age in dog years is {dog_years}.")
         else:
-            dog_years = 20 + (age - 2) * 7
-        
-        print(f"The dog's age in dog years is {dog_years}.")
-    else:
+            print('Invalid input.')
+    except ValueError:
         print('Invalid input.')
 
 # Call the function
@@ -150,7 +154,12 @@ weather_advice()
 
 def determine_season():
     month = input('Enter the month of the year (Jan - Dec): ').capitalize()
-    day = input('Enter the day of the month: ')
+
+    try:
+        day = int(input('Enter the day of the month: '))
+    except ValueError:
+        print('Invalid day.')
+        return
 
     months = {
         "Jan": 31, "Feb": 29, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30,
@@ -161,12 +170,10 @@ def determine_season():
         print("Invalid month.")
         return
 
-    if not day.isnumeric() or int(day) <= 0 or int(day) > months[month]:
+    if day <= 0 or day > months[month]:
         print("Invalid day.")
         return
     
-    day = int(day)
-
     if (month == "Dec" and day >= 21) or month in ['Jan', 'Feb'] or (month == 'Mar' and day <= 19):
         season = 'Winter' 
     elif (month == "Mar" and day >= 20) or month in ['Apr', 'May'] or (month == 'Jun' and day <= 20):
@@ -204,7 +211,12 @@ def guess_number():
     max_attempts = 5
 
     for i in range(1, max_attempts + 1):
-        guess = int(input('Guess a number within 1 to 100: '))
+        try:
+            guess = int(input('Guess a number within 1 to 100: '))
+        except ValueError:
+            print("Invalid input.")
+            continue
+
         if guess == target:
             print('Congratulations, you guessed correctly!')
             break
